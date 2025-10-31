@@ -1,15 +1,11 @@
 pub mod accounts;
+pub mod connecting;
 pub mod explorer;
 pub mod not_found;
-pub mod settings;
-pub mod connecting;
 pub mod router;
+pub mod settings;
 
 pub use {
-  accounts::AccountsPage,
-  explorer::Explorer,
-  not_found::PageNotFound,
-  settings::Settings,
-  connecting::Connecting,
-  router::PageRouter,
+    accounts::AccountsPage, connecting::Connecting, explorer::Explorer, not_found::PageNotFound,
+    router::PageRouter, settings::Settings,
 };

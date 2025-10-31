@@ -52,7 +52,7 @@ pub fn SettingsProvider(children: Children) -> impl IntoView {
         set_backend.set(b);
     });
 
-    let (settings_signal, _) = create_signal(settings);
+    let (settings_signal, _) = signal(settings);
     provide_context(settings_signal);
 
     children()

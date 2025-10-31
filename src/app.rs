@@ -1,10 +1,6 @@
 use leptos::prelude::*;
 
 use leptos_meta::{provide_meta_context, Stylesheet, Title};
-use leptos_router::{
-    components::{Route, Router, Routes},
-    StaticSegment, WildcardSegment,
-};
 
 use crate::pages::PageRouter;
 use crate::providers::accounts::AccountsProvider;

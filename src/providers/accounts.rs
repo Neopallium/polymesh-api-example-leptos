@@ -135,11 +135,11 @@ impl Accounts {
 
 #[component]
 pub fn AccountsProvider(children: Children) -> impl IntoView {
-    let (accounts, set_accounts) = create_signal(Accounts::new());
+    let (accounts, set_accounts) = signal(Accounts::new());
     let (backend_state, _) = use_backend_state();
 
     // Enable web3 extensions
-    create_effect(move |_| {
+    Effect::new(move |_| {
         spawn_local(async move {
             match web3::enable().await {
                 Ok(extensions) => {
@@ -161,7 +161,7 @@ pub fn AccountsProvider(children: Children) -> impl IntoView {
     });
 
     // Query account details when backend is connected
-    create_effect(move |_| {
+    Effect::new(move |_| {
         if let BackendState::Connected(api) = backend_state.get() {
             let account_list = accounts
                 .get()

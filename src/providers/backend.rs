@@ -88,8 +88,8 @@ impl core::ops::Deref for Backend {
 
 #[component]
 pub fn BackendProvider(children: Children) -> impl IntoView {
-    let (state, set_state) = create_signal(BackendState::Connecting);
-    let (backend, set_backend) = create_signal(Backend::new("".into()));
+    let (state, set_state) = signal(BackendState::Connecting);
+    let (backend, set_backend) = signal(Backend::new("".into()));
 
     provide_context(state);
     provide_context(set_state);

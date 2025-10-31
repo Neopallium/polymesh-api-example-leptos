@@ -50,10 +50,10 @@ async fn subscribe_blocks(api: Api, set_blocks: WriteSignal<Blocks>) -> Result<(
 
 #[component]
 pub fn BlocksProvider(children: Children) -> impl IntoView {
-    let (blocks, set_blocks) = create_signal(Blocks::default());
+    let (blocks, set_blocks) = signal(Blocks::default());
     let (backend_state, _) = use_backend_state();
 
-    create_effect(move |_| {
+    Effect::new(move |_| {
         if let BackendState::Connected(api) = backend_state.get() {
             let set_blocks = set_blocks.clone();
             spawn_local(async move {
