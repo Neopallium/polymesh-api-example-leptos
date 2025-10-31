@@ -26,7 +26,7 @@ pub fn Nav() -> impl IntoView {
             </div>
             <div class=move || if navbar_active.get() { "navbar-menu is-active" } else { "navbar-menu" }>
                 <div class="navbar-start">
-                    <a href="/accounts" class="navbar-item">
+                    <a href="accounts" class="navbar-item">
                         { "Accounts" }
                     </a>
 
@@ -35,17 +35,17 @@ pub fn Nav() -> impl IntoView {
                             { "Network" }
                         </div>
                         <div class="navbar-dropdown">
-                            <a href="/" class="navbar-item">
+                            <a href="./" class="navbar-item">
                                 { "Explorer" }
                             </a>
                         </div>
                     </div>
 
-                    <a href="/settings" class="navbar-item">
+                    <a href="settings" class="navbar-item">
                         { "Settings" }
                     </a>
 
-                    <a href="/dart_test" class="navbar-item">
+                    <a href="dart_test" class="navbar-item">
                         { "Dart Test" }
                     </a>
                  </div>
