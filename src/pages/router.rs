@@ -2,7 +2,7 @@ use leptos::either::Either;
 use leptos::prelude::*;
 use leptos_router::{
     components::{Route, Router, Routes},
-    StaticSegment,
+    path,
 };
 
 use crate::components::Nav;
@@ -22,10 +22,10 @@ pub fn PageRouter() -> impl IntoView {
                 if backend_state.get().is_connected() {
                     Either::Left(view! {
                         <Routes fallback=PageNotFound>
-                            <Route path=StaticSegment("") view=Explorer />
-                            <Route path=StaticSegment("accounts") view=AccountsPage />
-                            <Route path=StaticSegment("settings") view=Settings />
-                            <Route path=StaticSegment("dart_test") view=DartTest />
+                            <Route path=path!("/polymesh-api-example-leptos/") view=Explorer />
+                            <Route path=path!("/polymesh-api-example-leptos/accounts") view=AccountsPage />
+                            <Route path=path!("/polymesh-api-example-leptos/settings") view=Settings />
+                            <Route path=path!("/polymesh-api-example-leptos/dart_test") view=DartTest />
                         </Routes>
                     })
                 } else {
