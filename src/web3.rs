@@ -3,7 +3,7 @@ use wasm_bindgen::prelude::*;
 
 use serde::{Deserialize, Serialize};
 
-#[wasm_bindgen(module = "/public/js/web3.js")]
+#[wasm_bindgen(module = "/assets/js/web3.js")]
 extern "C" {
     #[wasm_bindgen(catch, js_name = enableExtensions)]
     async fn web3_enable_extensions(app: &str) -> Result<JsValue, JsValue>;

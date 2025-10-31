@@ -9,7 +9,7 @@ export default defineConfig({
             fileName: 'web3',
             formats: ['es']
         },
-        outDir: 'public/js',
+        outDir: 'assets/js',
         emptyOutDir: true,
         rollupOptions: {
             output: {

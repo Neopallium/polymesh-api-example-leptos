@@ -45,10 +45,9 @@ pub fn SettingsProvider(children: Children) -> impl IntoView {
     let url = settings.url.clone();
 
     // Set backend URL on mount - only run once
-    log::info!("Connecting to backend at URL: {}", url);
     Effect::new(move |_| {
-        log::info!("----- Connecting to backend at URL: {}", &url);
         let mut b = backend.get_untracked();
+        log::info!("Connecting to backend at URL: {}", url);
         b.connect_to(url.clone(), set_state);
         set_backend.set(b);
     });
