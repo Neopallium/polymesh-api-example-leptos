@@ -16,7 +16,7 @@ pub fn App() -> impl IntoView {
     view! {
         // injects a stylesheet into the document <head>
         // id=leptos means cargo-leptos will hot-reload this stylesheet
-        <Stylesheet id="leptos" href="/pkg/polymesh-api-example-leptos.css"/>
+        <Stylesheet id="leptos" href="pkg/polymesh-api-example-leptos.css"/>
 
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css" />
 

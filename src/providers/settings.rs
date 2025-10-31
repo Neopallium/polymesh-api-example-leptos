@@ -17,7 +17,7 @@ pub struct AppSettings {
 impl Default for AppSettings {
     fn default() -> Self {
         Self {
-            url: "ws://localhost:9944".into(),
+            url: "wss://testnet-rpc.polymesh.live/".into(),
         }
     }
 }
