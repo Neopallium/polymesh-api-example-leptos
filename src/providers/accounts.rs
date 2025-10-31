@@ -4,7 +4,8 @@ use std::collections::BTreeMap;
 use leptos::prelude::*;
 use leptos::task::spawn_local;
 
-use gloo_storage::{LocalStorage, Storage};
+use codee::string::JsonSerdeCodec;
+use leptos_use::storage::use_local_storage;
 
 use polymesh_api::polymesh::types::polymesh_primitives::secondary_key::KeyRecord;
 
@@ -67,16 +68,14 @@ pub struct Accounts {
 
 impl Accounts {
     pub fn new() -> Self {
-        let selected: String = LocalStorage::get(SELECTED_KEY).unwrap_or_default();
-
         Self {
-            selected,
+            selected: String::new(),
             names: Default::default(),
             accounts: Default::default(),
         }
     }
 
-    pub fn update_accounts(&mut self, accounts: Vec<web3::Account>) {
+    pub fn update_accounts(&mut self, accounts: Vec<web3::Account>) -> Option<String> {
         for account in accounts {
             let name = account.meta.name;
             match AccountId::from_str(&account.address) {
@@ -96,25 +95,19 @@ impl Accounts {
             }
         }
         // If no account is selected or missing selected account, try selecting the first.
-        if self.selected == "" || !self.accounts.contains_key(&self.selected) {
-            let first = self
-                .accounts
-                .first_key_value()
-                .map(|(name, _)| name.to_string());
-            log::info!("select first account = {first:#?}");
-            if let Some(name) = first {
-                self.update_selected(name);
+        if self.selected.is_empty() || !self.accounts.contains_key(&self.selected) {
+            if let Some((name, _)) = self.accounts.first_key_value() {
+                self.selected = name.to_string();
+                log::info!("select first account = {}", self.selected);
+                return Some(self.selected.clone());
             }
         }
+        None
     }
 
-    fn update_selected(&mut self, name: String) {
+    pub fn set_selected(&mut self, name: String) {
         log::info!("select account = {name:#?}");
         if self.accounts.contains_key(&name) {
-            // Save selected account
-            if let Err(err) = LocalStorage::set(SELECTED_KEY, &name) {
-                log::error!("Failed to save selected account: {err:?}");
-            }
             self.selected = name;
         }
     }
@@ -135,6 +128,8 @@ impl Accounts {
 
 #[component]
 pub fn AccountsProvider(children: Children) -> impl IntoView {
+    let (selected_account, set_selected_account, _) =
+        use_local_storage::<String, JsonSerdeCodec>(SELECTED_KEY);
     let (accounts, set_accounts) = signal(Accounts::new());
     let (backend_state, _) = use_backend_state();
 
@@ -146,7 +141,13 @@ pub fn AccountsProvider(children: Children) -> impl IntoView {
                     log::info!("web3 extensions = {extensions:#?}");
                     match web3::accounts().await {
                         Ok(web3_accounts) => {
-                            set_accounts.update(|acc| acc.update_accounts(web3_accounts));
+                            set_accounts.update(|acc| {
+                                acc.update_accounts(web3_accounts);
+                                // Sync with stored selected account
+                                if !selected_account.get_untracked().is_empty() {
+                                    acc.selected = selected_account.get_untracked();
+                                }
+                            });
                         }
                         Err(err) => {
                             log::error!("Web3 accounts failed: {err:?}");
@@ -193,6 +194,7 @@ pub fn AccountsProvider(children: Children) -> impl IntoView {
 
     provide_context(accounts);
     provide_context(set_accounts);
+    provide_context(set_selected_account);
 
     children()
 }

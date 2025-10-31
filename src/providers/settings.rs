@@ -2,7 +2,8 @@ use leptos::prelude::*;
 
 use serde::{Deserialize, Serialize};
 
-use gloo_storage::{LocalStorage, Storage};
+use codee::string::JsonSerdeCodec;
+use leptos_use::storage::use_local_storage;
 
 use crate::providers::backend::*;
 
@@ -30,18 +31,14 @@ impl AppSettings {
 
 #[component]
 pub fn SettingsProvider(children: Children) -> impl IntoView {
-    let settings: AppSettings = LocalStorage::get(APP_KEY).unwrap_or_else(|_| {
-        let settings = AppSettings::default();
-        // Save settings.
-        if let Err(err) = LocalStorage::set(APP_KEY, &settings) {
-            log::error!("Failed to save settings: {err:?}");
-        }
-        settings
-    });
+    let (stored_settings, set_stored_settings, _) =
+        use_local_storage::<AppSettings, JsonSerdeCodec>(APP_KEY);
 
     let (backend, set_backend) = use_backend();
     let (_, set_state) = use_backend_state();
 
+    // Get the URL from storage, or use default
+    let settings = stored_settings.get_untracked();
     let url = settings.url.clone();
 
     // Set backend URL on mount - only run once
@@ -52,12 +49,15 @@ pub fn SettingsProvider(children: Children) -> impl IntoView {
         set_backend.set(b);
     });
 
-    let (settings_signal, _) = signal(settings);
-    provide_context(settings_signal);
+    provide_context(stored_settings);
+    provide_context(set_stored_settings);
 
     children()
 }
 
-pub fn use_settings() -> ReadSignal<AppSettings> {
-    use_context::<ReadSignal<AppSettings>>().expect("Settings context")
+pub fn use_settings() -> (ReadSignal<AppSettings>, WriteSignal<AppSettings>) {
+    (
+        use_context::<ReadSignal<AppSettings>>().expect("Settings context"),
+        use_context::<WriteSignal<AppSettings>>().expect("Settings setter context"),
+    )
 }
