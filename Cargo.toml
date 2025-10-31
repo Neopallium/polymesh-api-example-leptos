@@ -72,7 +72,7 @@ web-sys = { version = "0.3", features = ["Window", "Performance", "console"] }
 
 # native:
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
-polymesh-api = { version = "3.6", features = ["download_metadata"] }
+polymesh-api = { version = "3.6", features = [] }
 # DART Assets
 polymesh-dart = { version = "0.1.0", default-features = false, features = [
   "std",
@@ -84,7 +84,7 @@ polymesh-dart = { version = "0.1.0", default-features = false, features = [
 
 # web:
 [target.'cfg(target_arch = "wasm32")'.dependencies]
-polymesh-api = { version = "3.6", default-features = false, features = ["download_metadata", "polymesh_v7", "wasm", "serde"] }
+polymesh-api = { version = "3.6", default-features = false, features = ["polymesh_v7", "wasm", "serde"] }
 # DART Assets
 polymesh-dart = { version = "0.1.0", default-features = false, features = [
 	"no_std",
@@ -94,6 +94,10 @@ polymesh-dart = { version = "0.1.0", default-features = false, features = [
 
 [features]
 default = []
+
+download_metadata = [
+  "polymesh-api/download_metadata",
+]
 
 # Defines a size-optimized profile for the WASM bundle in release mode
 [profile.wasm-release]
