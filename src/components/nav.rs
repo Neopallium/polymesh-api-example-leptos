@@ -44,7 +44,11 @@ pub fn Nav() -> impl IntoView {
                     <a href="/settings" class="navbar-item">
                         { "Settings" }
                     </a>
-                </div>
+
+                    <a href="/dart_test" class="navbar-item">
+                        { "Dart Test" }
+                    </a>
+                 </div>
 
                 <div class="navbar-end">
                     <div class="navbar-item">

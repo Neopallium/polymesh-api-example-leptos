@@ -8,7 +8,7 @@ use leptos_router::{
 use crate::components::Nav;
 use crate::providers::backend::use_backend_state;
 
-use crate::pages::{AccountsPage, Connecting, Explorer, PageNotFound, Settings};
+use crate::pages::{AccountsPage, Connecting, DartTest, Explorer, PageNotFound, Settings};
 
 #[component]
 pub fn PageRouter() -> impl IntoView {
@@ -25,6 +25,7 @@ pub fn PageRouter() -> impl IntoView {
                             <Route path=StaticSegment("") view=Explorer />
                             <Route path=StaticSegment("accounts") view=AccountsPage />
                             <Route path=StaticSegment("settings") view=Settings />
+                            <Route path=StaticSegment("dart_test") view=DartTest />
                         </Routes>
                     })
                 } else {

@@ -3,6 +3,47 @@ name = "polymesh-api-example-leptos"
 version = "0.1.0"
 edition = "2021"
 
+[patch.crates-io]
+# Use these for testing new versions of `polymesh-api`.
+#polymesh-api = { git = "https://github.com/PolymeshAssociation/polymesh-api" }
+#polymesh-api-client = { git = "https://github.com/PolymeshAssociation/polymesh-api" }
+#polymesh-api-client-extras = { git = "https://github.com/PolymeshAssociation/polymesh-api" }
+#polymesh-api-tester = { git = "https://github.com/PolymeshAssociation/polymesh-api" }
+#polymesh-api-codegen = { git = "https://github.com/PolymeshAssociation/polymesh-api" }
+#polymesh-api-codegen-macro = { git = "https://github.com/PolymeshAssociation/polymesh-api" }
+
+# DART
+# Curve tree dependencies
+#curve_tree_bulletproofs = { package = "bulletproofs", path = "../curve-trees/bulletproofs" }
+#curve_tree_relations = { package = "relations", path = "../curve-trees/relations" }
+# If want to pull code for curve-trees from git, comment above 2 relations and uncomment below 2
+curve_tree_bulletproofs = { package = "bulletproofs", git = "https://github.com/PolymeshAssociation/curve-trees", branch = "polymesh" }
+curve_tree_relations = { package = "relations", git = "https://github.com/PolymeshAssociation/curve-trees", branch = "polymesh" }
+
+#dock_crypto_utils = { path = "../crypto/utils" }
+#schnorr_pok = { path = "../crypto/schnorr_pok" }
+dock_crypto_utils = { git = "https://github.com/PolymeshAssociation/crypto" }
+schnorr_pok = { git = "https://github.com/PolymeshAssociation/crypto" }
+
+#polymesh-dart = { path = "../polymesh-dart" }
+#polymesh-dart-bp = { path = "../polymesh-dart/dart-bp" }
+#polymesh-dart-common = { path = "../polymesh-dart/dart-common" }
+polymesh-dart = { git = "https://github.com/PolymeshAssociation/polymesh-dart", branch = "main" }
+polymesh-dart-bp = { git = "https://github.com/PolymeshAssociation/polymesh-dart", branch = "main" }
+polymesh-dart-common = { git = "https://github.com/PolymeshAssociation/polymesh-dart", branch = "main" }
+
+# Polymesh changes to Arkworks.
+#ark-serialize = { path = "../../arkworks-algebra/serialize" }
+#ark-ec = { path = "../../arkworks-algebra/ec" }
+#ark-ff = { path = "../../arkworks-algebra/ff" }
+#ark-pallas = { path = "../../arkworks-algebra/curves/pallas" }
+#ark-vesta = { path = "../../arkworks-algebra/curves/vesta" }
+ark-serialize = { git = "https://github.com/PolymeshAssociation/arkworks-algebra.git", branch = "polymesh-master" }
+ark-ec = { git = "https://github.com/PolymeshAssociation/arkworks-algebra.git", branch = "polymesh-master" }
+ark-ff = { git = "https://github.com/PolymeshAssociation/arkworks-algebra.git", branch = "polymesh-master" }
+ark-pallas = { git = "https://github.com/PolymeshAssociation/arkworks-algebra.git", branch = "polymesh-master" }
+ark-vesta = { git = "https://github.com/PolymeshAssociation/arkworks-algebra.git", branch = "polymesh-master" }
+
 [dependencies]
 console_error_panic_hook = "0.1"
 
@@ -24,13 +65,32 @@ hex = "0.4"
 log = "0.4"
 wasm-logger = "0.2"
 
+rand = { version = "0.8", default-features = false, features = ["alloc", "getrandom"] }
+getrandom = { version = "0.3", default-features = false, features = ["wasm_js"] }
+
+web-sys = { version = "0.3", features = ["Window", "Performance", "console"] }
+
 # native:
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
 polymesh-api = { version = "3.6", features = ["download_metadata"] }
+# DART Assets
+polymesh-dart = { version = "0.1.0", default-features = false, features = [
+  "std",
+  "asm",
+  "parallel",
+  "backend_bp",
+  "async_tree",
+] }
 
 # web:
 [target.'cfg(target_arch = "wasm32")'.dependencies]
 polymesh-api = { version = "3.6", default-features = false, features = ["download_metadata", "polymesh_v7", "wasm", "serde"] }
+# DART Assets
+polymesh-dart = { version = "0.1.0", default-features = false, features = [
+	"no_std",
+  "backend_bp",
+  "async_tree",
+] }
 
 [features]
 default = []
