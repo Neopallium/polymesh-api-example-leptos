@@ -154,6 +154,9 @@ pub fn DartTest() -> impl IntoView {
 
     let value = Memo::new(move |_| {
         // Generate a new set of Dart account keys
+        if !dart_init.get() {
+            return "Dart not initialized".to_string();
+        }
         let keys = issuer_keys.get();
         wasm_bench_dart();
         format!("Dart Account Keys:\nPublic Key: {:?}", keys.public_keys())

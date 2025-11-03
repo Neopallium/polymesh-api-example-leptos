@@ -33,11 +33,11 @@ polymesh-dart-bp = { git = "https://github.com/PolymeshAssociation/polymesh-dart
 polymesh-dart-common = { git = "https://github.com/PolymeshAssociation/polymesh-dart", branch = "main" }
 
 # Polymesh changes to Arkworks.
-#ark-serialize = { path = "../../arkworks-algebra/serialize" }
-#ark-ec = { path = "../../arkworks-algebra/ec" }
-#ark-ff = { path = "../../arkworks-algebra/ff" }
-#ark-pallas = { path = "../../arkworks-algebra/curves/pallas" }
-#ark-vesta = { path = "../../arkworks-algebra/curves/vesta" }
+#ark-serialize = { path = "../arkworks-algebra/serialize" }
+#ark-ec = { path = "../arkworks-algebra/ec" }
+#ark-ff = { path = "../arkworks-algebra/ff" }
+#ark-pallas = { path = "../arkworks-algebra/curves/pallas" }
+#ark-vesta = { path = "../arkworks-algebra/curves/vesta" }
 ark-serialize = { git = "https://github.com/PolymeshAssociation/arkworks-algebra.git", branch = "polymesh-master" }
 ark-ec = { git = "https://github.com/PolymeshAssociation/arkworks-algebra.git", branch = "polymesh-master" }
 ark-ff = { git = "https://github.com/PolymeshAssociation/arkworks-algebra.git", branch = "polymesh-master" }
@@ -54,6 +54,10 @@ leptos_router = { version = "0.8.2", features = ["nightly"] }
 wasm-bindgen = "=0.2.105"
 wasm-bindgen-futures = "0.4"
 serde-wasm-bindgen = "0.4"
+
+wasm-bindgen-rayon = { version = "1.3", features = ["no-bundler"] }
+#wasm_thread = "0.3.0"
+rayon = { version = "1.11", features = ["web_spin_lock"] }
 
 leptos-use = "0.16"
 codee = "0.3"
@@ -87,7 +91,9 @@ polymesh-dart = { version = "0.1.0", default-features = false, features = [
 polymesh-api = { version = "3.6", default-features = false, features = ["polymesh_v7", "wasm", "serde"] }
 # DART Assets
 polymesh-dart = { version = "0.1.0", default-features = false, features = [
-	"no_std",
+	"std",
+  "asm",
+  "parallel",
   "backend_bp",
   "async_tree",
 ] }
@@ -106,6 +112,10 @@ opt-level = 'z'
 lto = true
 codegen-units = 1
 panic = "abort"
+
+# Optimize all dependencies even in debug builds:
+[profile.dev.package."*"]
+opt-level = 1
 
 [package.metadata.leptos]
 # The name used by wasm-bindgen/cargo-leptos for the JS/WASM bundle. Defaults to the crate name

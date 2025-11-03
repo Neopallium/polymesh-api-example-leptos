@@ -177,7 +177,7 @@ pub fn AccountsProvider(children: Children) -> impl IntoView {
                     }
                     match info.query_account_details(&api).await {
                         Ok(true) => {
-                            log::info!("Got account details: {info:?}");
+                            //log::info!("Got account details: {info:?}");
                             set_accounts.update(|acc| acc.update_account_details(info));
                         }
                         Ok(false) => {
